@@ -1,12 +1,17 @@
 workflows:
-  ios-release-no-shorebird:
-    name: iOS Release
+  ios-release-adhoc:
+    name: iOS Ad Hoc Release
     environment:
       flutter: stable
       xcode: latest
+      cocoapods: default
+      vars:
+        XCODE_WORKSPACE: "ios/Runner.xcworkspace"
+        XCODE_SCHEME: "Runner"
     scripts:
-      - flutter build ios --simulator
-      - mkdir -p build/ios/ipa
-      - zip -r build/ios/ipa/Runner.app.zip build/ios/iphonesimulator/Runner.app
+      - name: Install dependencies
+        script: flutter pub get
+      - name: Build iOS IPA
+        script: flutter build ipa --release
     artifacts:
-      - build/ios/ipa/Runner.app.zip
+      - build/ios/ipa/*.ipa
